@@ -36,9 +36,13 @@ function App() {
   }, [readyState]);
 
   useEffect(() => {
-    console.log("Received: ", lastJsonMessage);
     if (lastJsonMessage === null) {
       return;
+    }
+    if (lastJsonMessage["battery_temperature"] === -1) {
+      console.log("Error: Unsafe operating temperature at timestamp " + lastJsonMessage["timestamp"]);
+    } else {
+      console.log("Received: ", lastJsonMessage);
     }
     setTemperature(lastJsonMessage["battery_temperature"]);
   }, [lastJsonMessage]);

@@ -5,7 +5,12 @@ interface TemperatureProps {
 }
 
 function LiveValue({ temp }: TemperatureProps) {
-  let valueColour = "white";
+  let valueColour = "green";
+  if (temp > 80 || temp < 20) {
+    valueColour = "red";
+  } else if (temp > 75 || temp < 25) {
+    valueColour = "yellow";
+  }
 
   return (
     <header className="live-value" style={{ color: valueColour }}>
