@@ -30,9 +30,7 @@ tcpServer.on("connection", (socket) => {
       }
       if (count >= 3) {
         console.error('Unsafe operating temperature at timestamp' + jsonData.timestamp);
-        count = 0;
       }
-      console.log(count);
       
       // Send JSON over WS to frontend clients
       websocketServer.clients.forEach(function each(client) {

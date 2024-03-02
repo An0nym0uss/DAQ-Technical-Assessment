@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import LiveValue from "./live_value";
+import TemperatureGauge from "./temperature_gauge";
+import ValueTitle from "./value_title";
 import RedbackLogo from "./redback_logo.jpg";
 import "./App.css";
 import useWebSocket, { ReadyState } from "react-use-websocket";
@@ -13,6 +15,7 @@ interface VehicleData {
 
 function App() {
   const [temperature, setTemperature] = useState<number>(0);
+  const [status, setStatus] = useState<number>(0);
   const {
     lastJsonMessage,
     readyState,
@@ -41,8 +44,10 @@ function App() {
     }
     if (lastJsonMessage["battery_temperature"] === -1) {
       console.log("Error: Unsafe operating temperature at timestamp " + lastJsonMessage["timestamp"]);
+      setStatus(-1);
     } else {
       console.log("Received: ", lastJsonMessage);
+      setStatus(0);
     }
     setTemperature(lastJsonMessage["battery_temperature"]);
   }, [lastJsonMessage]);
@@ -55,8 +60,11 @@ function App() {
           className="redback-logo"
           alt="Redback Racing Logo"
         />
-        <p className="value-title">Live Battery Temperature</p>
-        <LiveValue temp={temperature} />
+        <div className="Temperature"> 
+          <TemperatureGauge temp={temperature} />
+          <LiveValue temp={temperature} />
+        </div>
+        <ValueTitle temp={status} />
       </header>
     </div>
   );
